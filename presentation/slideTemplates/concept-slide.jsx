@@ -20,12 +20,15 @@ const ConceptSlide = ({
 }) => {
   return (
     <FullScreen column>
-      <Text textColor={textColor(inverted)}>{concept}:</Text>
+      <Text textFont="secondary" textColor={textColor(inverted)}>
+        {concept}:
+      </Text>
       <Heading
         size={size}
         fit={fit}
         caps={caps}
-        textColor={headingColor(inverted)}>
+        textColor={headingColor(inverted)}
+      >
         {description}
       </Heading>
       {children}

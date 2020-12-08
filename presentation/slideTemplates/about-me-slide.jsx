@@ -29,7 +29,7 @@ const Column = styled.div`
   display: flex;
   flex-direction: column;
   flex: 1;
-  flex-basis: 33%;
+  flex-basis: 50%;
   justify-content: space-evenly;
 `
 
@@ -42,7 +42,6 @@ const AboutMeSlide = ({ children }) => {
     '/',
     ''
   )
-  const poohBear = require('../../assets/images/poohbear.jpg').replace('/', '')
   return (
     <FullScreen column>
       <Row style={{ flexShrink: 0 }}>
@@ -50,11 +49,11 @@ const AboutMeSlide = ({ children }) => {
           Hannah Howard #AboutMe
         </Heading>
       </Row>
-      <Row>
+      <Row style={{ maxHeight: '90%' }}>
         <Appear order={0}>
           <Column>
             <Image src={tgwLogo} style={imageStyle} />
-            <Text>
+            <Text textFont="secondary">
               @techgirlwonder
               <br />
               she/her
@@ -64,15 +63,9 @@ const AboutMeSlide = ({ children }) => {
         <Appear order={1}>
           <Column>
             <Image src={c5Logo} style={imageStyle} />
-            <Text style={{ wordBreak: 'break-word' }}>
+            <Text textFont="secondary" style={{ wordBreak: 'break-word' }}>
               hannah@carbonfive.com
             </Text>
-          </Column>
-        </Appear>
-        <Appear order={2}>
-          <Column>
-            <Image src={poohBear} style={imageStyle} />
-            <Text>Personal Anecdote: I have a dog</Text>
           </Column>
         </Appear>
       </Row>

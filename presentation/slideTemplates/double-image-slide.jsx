@@ -39,7 +39,8 @@ const DoubleImageSlide = ({
             fit={fit}
             caps={caps}
             textColor={headingColor(inverted)}
-            style={{ marginBottom: '.5em' }}>
+            style={{ marginBottom: '.5em' }}
+          >
             {title}
           </Heading>
         </div>
@@ -51,13 +52,18 @@ const DoubleImageSlide = ({
           display: 'flex',
           flexDirection: 'row',
           justifyContent: 'space-between'
-        }}>
+        }}
+      >
         <Image style={imageStyle} src={imageSrc1} />
         <Image style={imageStyle} src={imageSrc2} />
       </div>
       {!!text && (
         <div style={{ width: 1000 }}>
-          <Text textColor={textColor(inverted)} style={{ marginTop: '.5em' }}>
+          <Text
+            textFont="secondary"
+            textColor={textColor(inverted)}
+            style={{ marginTop: '.5em' }}
+          >
             {text}
           </Text>
         </div>

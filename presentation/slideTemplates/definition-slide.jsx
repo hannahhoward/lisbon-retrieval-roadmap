@@ -25,11 +25,16 @@ const DefinitionSlide = ({
         size={size}
         fit={fit}
         caps={caps}
-        textColor={headingColor(inverted)}>
+        textColor={headingColor(inverted)}
+      >
         {term}
         {colon ? ':' : ''}
       </Heading>
-      <Text style={{ marginTop: '40px' }} textColor={textColor(inverted)}>
+      <Text
+        style={{ marginTop: '40px' }}
+        textFont="secondary"
+        textColor={textColor(inverted)}
+      >
         {definition}
       </Text>
       {children}

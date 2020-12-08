@@ -1,7 +1,8 @@
 // color palette goes here
 export default {
-  primary: '#FF9898',
-  secondary: '#630239',
-  tertiary: '#D2874C',
-  quartenary: '#32001D'
+  primary: '#FFFFFF',
+  secondary: '#1575f7',
+  tertiary: '#f5f6f7',
+  quartenary: '#002256',
+  quaternary: '#1575f7'
 }

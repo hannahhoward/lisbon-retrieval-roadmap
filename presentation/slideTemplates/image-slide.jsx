@@ -40,13 +40,14 @@ const ImageSlide = ({
   return (
     <FullScreen column>
       {!!title && (
-        <div style={{ width: 1000 }}>
+        <div style={{ width: '80%' }}>
           <Heading
             size={size}
             fit={fit}
             caps={caps}
             textColor={headingColor(inverted)}
-            style={{ marginBottom: '.5em' }}>
+            style={{ marginBottom: '.5em' }}
+          >
             {title}
           </Heading>
         </div>
@@ -57,12 +58,17 @@ const ImageSlide = ({
           position: 'relative',
           width: '100%',
           justifyContent: 'stretch'
-        }}>
+        }}
+      >
         <Image style={thisImageStyle} src={imageSrc} />
       </div>
       {!!text && (
         <div style={{ width: 1000 }}>
-          <Text textColor={textColor(inverted)} style={{ marginTop: '.5em' }}>
+          <Text
+            textFont="secondary"
+            textColor={textColor(inverted)}
+            style={{ marginTop: '.5em' }}
+          >
             {text}
           </Text>
         </div>

@@ -89,6 +89,11 @@ module.exports = {
           }
         ],
         include: path.join(__dirname, 'assets')
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/,
+        use: ['url-loader'],
+        include: path.join(__dirname, 'assets')
       }
     ]
   },

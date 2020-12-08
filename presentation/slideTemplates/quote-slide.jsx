@@ -14,7 +14,9 @@ const QuoteSlide = ({ inverted, quote, cite, children }) => {
     <FullScreen column>
       <BlockQuote style={{ textAlign: 'right' }}>
         <Quote textColor={headingColor(inverted)}>{quote}</Quote>
-        <Cite textColor={textColor(inverted)}>{cite}</Cite>
+        <Cite textFont="secondary" textColor={textColor(inverted)}>
+          {cite}
+        </Cite>
       </BlockQuote>
       {children}
     </FullScreen>

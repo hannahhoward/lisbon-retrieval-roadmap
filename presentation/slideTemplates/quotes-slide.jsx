@@ -17,14 +17,18 @@ const QuotesSlide = ({ inverted, quotes, appear, children }) => {
             <Appear key={quote.quote}>
               <BlockQuote style={{ textAlign: 'right' }}>
                 <Quote textColor={headingColor(inverted)}>{quote.quote}</Quote>
-                <Cite textColor={textColor(inverted)}>{quote.cite}</Cite>
+                <Cite textFont="secondary" textColor={textColor(inverted)}>
+                  {quote.cite}
+                </Cite>
               </BlockQuote>
             </Appear>
           ))
         : quotes.map(quote => (
             <BlockQuote key={quote.quote} style={{ textAlign: 'right' }}>
               <Quote textColor={headingColor(inverted)}>{quote.quote}</Quote>
-              <Cite textColor={textColor(inverted)}>{quote.cite}</Cite>
+              <Cite textFont="secondary" textColor={textColor(inverted)}>
+                {quote.cite}
+              </Cite>
             </BlockQuote>
           ))}
       {children}
