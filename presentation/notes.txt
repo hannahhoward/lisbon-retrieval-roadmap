@@ -1,0 +1,944 @@
+// Import React
+import React from 'react'
+import '../assets/prism-tomorrow-ally.css'
+
+// Import Spectacle Core tags
+import { Deck, Notes } from 'spectacle'
+
+import AboutMeSlide from './slideTemplates/about-me-slide.jsx'
+import QuoteSlide from './slideTemplates/quote-slide.jsx'
+import DefinitionSlide from './slideTemplates/definition-slide.jsx'
+import ListSlide from './slideTemplates/list-slide.jsx'
+import SimpleSlide from './slideTemplates/simple-slide.jsx'
+import ConceptSlide from './slideTemplates/concept-slide.jsx'
+import ImageSlide from './slideTemplates/image-slide.jsx'
+import DoubleImageSlide from './slideTemplates/double-image-slide.jsx'
+import QuotesSlide from './slideTemplates/quotes-slide.jsx'
+import FullImageSlide from './slideTemplates/full-image-slide.jsx'
+import colors from './slideTemplates/colors'
+import CodeSlide from 'spectacle-code-slide'
+
+// Import image preloader util
+import preloader from 'spectacle/lib/utils/preloader'
+
+// Import theme
+import createTheme from 'spectacle/lib/themes/default'
+preloader({})
+
+// Require CSS
+require('normalize.css')
+// use colors in slideTemplates/colors.js to construct theme
+const theme = createTheme(colors, {
+  primary: 'Aileron',
+  secondary: 'Source Serif Pro'
+})
+
+export default class Presentation extends React.Component {
+  render() {
+    return (
+      <Deck
+        transition={['zoom', 'slide']}
+        transitionDuration={500}
+        theme={theme}>
+        <AboutMeSlide>
+          <Notes>
+            <p>Hi everyone!</p>
+            <p>
+              My names Hannah. I'm one of the primary authors of the markets
+              software that manages deals in Filecoin. You can find me on the
+              internet @techgirlwonder. And I use she her pronouns
+            </p>
+            <p>
+              I work for Carbon Five. We're a product development agency that
+              works with all kinds of clients from startups to enterprise,
+              helping them turn their ideas into software. We're hiring and
+              hirable, so come find us afterward if you're interested
+            </p>
+          </Notes>
+        </AboutMeSlide>
+        <ImageSlide
+          inverted
+          fit={true}
+          title="Filecoin's Launched!"
+          text="Understanding Cryptocurrency’s Newest Network"
+          image="one-million-spacebucks.jpg">
+          <Notes>
+            So! This talk is about the cryptocurrency world's most recently
+            launched network. It's called Filecoin, and I put this reference
+            here to the old movie Spaceballs because Filecoin is a decentralized
+            blockchain network aimed at providing very inexpensive and reliable
+            storage -- it's literally a network where you the bucks pay for
+            space!
+          </Notes>
+        </ImageSlide>
+        <SimpleSlide statement="What makes Filecoin different?"></SimpleSlide>
+        <SimpleSlide inverted statement="Filecoin Is A Proof Of Stake Network">
+          <Notes>
+            Filecoin is fundamentally a proof of stake network. In that sense,
+            it's similar to Ethereum 2 and many newer blockchains
+          </Notes>
+        </SimpleSlide>
+        <SimpleSlide
+          inverted
+          fit={false}
+          statement="Filecoin Stake Is Measured In Storage Committed">
+          <Notes>
+            What makes Filecoin different is the stake you put into the network
+            is not merely the token. Rather, it's directly tied to the aim of
+            the network -- to build decentralized storage. Miners make money by
+            contributing to the overall storage power of the network
+          </Notes>
+        </SimpleSlide>
+        <ListSlide
+          ordered={true}
+          title="Outline"
+          list={[
+            'Origins and Rationale',
+            'Unique proofs: PoST and PoRep',
+            'Expected Consensus',
+            'Cryptoeconomics',
+            'Virtual Machine',
+            'Filecoin vs Ethereum (Filecoin ❤️ Ethereum)',
+            'Markets',
+            'Demo'
+          ]}>
+          <Notes>
+            <p>
+              So, in terms of what I'm going to cover today, I want to give you
+              the broadest possible overview of filecoin will not sacrificing
+              too much technical depth
+            </p>
+            <p>
+              I'll start with an overview of why you'd want to build an
+              incentivized storage network
+            </p>
+            <p>
+              I'll talk about some similarities and differences in the problems
+              Filecoin and Ethereum attempt to solve, and how they complement
+              each other as a platform for decentralized applications
+            </p>
+            <p>
+              I'll give a very brief and highly non-expert overview of the
+              proofs system that makes filecoin work
+            </p>
+            <p>
+              I'll dive into some of the rationale for various cryptoeconomic
+              incentives in the network
+            </p>
+            <p>I'll identify the major components of filecoin</p>
+            <p>
+              I'll talk a little bit about the specific system I wrote -- the
+              storage and retrieval systems
+            </p>
+            <p>
+              And finally, hopefully, I'll be able to demo actually storing data
+              on Filecoin
+            </p>
+          </Notes>
+        </ListSlide>
+        <ConceptSlide
+          fit={false}
+          concept="Objective"
+          description="Understand why and how to use Filecoin to support Ethereum applications">
+          <Notes>
+            My hope for this talk, and what you can hold me accountable to, is
+            that by the end you will be able to identify why you'd want to use
+            Filecoin as a storage component in a smart-contract based
+            application in Ethereum, and can recognize the basic steps you'd
+            perform to go about doing that.
+          </Notes>
+        </ConceptSlide>
+        <SimpleSlide statement="1. Origins And Rationale">
+          <Notes>
+            So, let's get started, by looking at why we want to build a
+            decentralized storage network in the first place
+          </Notes>
+        </SimpleSlide>
+        <ImageSlide
+          title="The World If..."
+          text="It Were All Decentralized"
+          image="future-if.jpg"
+          inverted>
+          <Notes>
+            Typically these talks start with an emotional appeal about the
+            promise of the the early internet, the betrayal of that promise by
+            big centralized platforms, and how decentralization will solve all
+            our problems. I'm skipping that, cause I assume at an Ethereum
+            meetup most people are on board with that pitch.
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          title="Internet Storage Capacity"
+          image="milky-way.jpg">
+          <Notes>
+            I want to instead just point out a reality: the internet is made up
+            of billions of devices, and most of those devices have storage, and
+            collectively the vast majority of that storage is actually unused.
+            Like space, it's mostly empty. If we could utilize that storage
+            power, we could offer extremely cheap storage to the world, while
+            moving off of centralized services.
+          </Notes>
+        </ImageSlide>
+        <DefinitionSlide
+          inverted
+          fit={false}
+          term="IPFS"
+          definition="Interplanetary File System">
+          <Notes>
+            The creators of Filecoin, Protocol Labs, initially built a purely
+            altruistic decentralized system -- called the interplanetary file
+            system -- essentially encourage people to just donate their unused
+            space to the worlds need for storage. And it's worked surprisingly
+            well. But, there are some challenges...
+          </Notes>
+        </DefinitionSlide>
+        <ImageSlide
+          inverted
+          fit={true}
+          title="Trustless Environment"
+          image="grandma.jpg">
+          <Notes>
+            <p>
+              A traditional data storage environment is entirely based on
+              reputation and trust
+            </p>
+            <p>
+              The only real reason we think Amazon will store our data and hold
+              it over time is cause they're Amazon and we're paying them
+            </p>
+            <p>
+              In a purely trustless environment, we have none of these
+              gaurantees -- I have no reason to believe if you're holding my
+              data today you won't decide to repurpose that storage tomorrow.
+            </p>
+            <p>
+              So, Filecoin is a blockchain based system that sets up an
+              environment where rational actors are incentivized to behave in
+              ways that create comprobable gaurantees to the world of
+              centralized storage, and for them to prove to clients they're
+              delivering on those gaurantees.
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ListSlide
+          inverted
+          ordered={true}
+          appear={false}
+          title="Filecoin Propositions"
+          list={[
+            'Earn Block Rewards Through Storage Capacity Committed',
+            'Prove Storage Of A Unique Copy Of Data Over Time'
+          ]}>
+          <Notes>
+            <p>
+              In Filecoin, we have some core propositions for how our network is
+              incentivized
+            </p>
+            <p>
+              First, our block reward system rewards miners for helping increase
+              the overall storage capacity of the network. You demonstrate
+              storage you're committing to the network and you must demonstrate
+              it over time.
+            </p>
+            <p>
+              Second, the same is true when you make deals between clients and
+              miners -- miners only get paid when they prove they are storing a
+              unique copy of data and they're storing it over time.
+            </p>
+          </Notes>
+        </ListSlide>
+        <SimpleSlide statement="2. Unique proofs: PoST and PoRep" />
+        <DefinitionSlide
+          inverted
+          term="Proof Of Space"
+          definition="Demonstration Of Posssession/Retrievability of Data">
+          <Notes>
+            So all Filecoin proofs are different forms of proof of space. A
+            proof of space is simply a mechanism by which a challenger causes a
+            holder of data to prove at a given point in time to demonstrate they
+            are still holding the data. Assuming the holder is still in
+            posessiont of the data, they can prove that possession through
+            various kinds of random sampling, that produces a more efficient
+            proof than simply responding with all the data. Ideally, the
+            challenger need not actually know all that much about the underlying
+            data in order to create a challenge and verify the proof. A number
+            of these sorts of proofs have existed for some time.
+          </Notes>
+        </DefinitionSlide>
+        <ListSlide
+          inverted
+          ordered={false}
+          appear={true}
+          title="Insufficiency"
+          list={['Sybil Attack', 'Outsourcing Attack', 'Generation Attack']}>
+          <Notes>
+            <p>
+              But a simple Proof of Space is not adequate for building a storage
+              network of real data. We need to provide additional gaurantees to
+              prevent malicious miners from gaming the system and earning block
+              rewards for storage they aren't providing
+            </p>
+            <p>
+              First, a malicious miner should not be able to gain more rewards
+              by creating multiple fake identities, each pretending to store a
+              piece of data, when in reality it is only storing the data once.
+            </p>
+            <p>
+              Second, a malicious miner should not able to fake storing data by
+              simply fetching the data from someone else when asked to prove
+              possesstion
+            </p>
+            <p>
+              Finally, a malicious miner shouldn't be able to claim they are
+              storing a large amount of data that they instead generate
+              on-demand from some small amount of data
+            </p>
+          </Notes>
+        </ListSlide>
+        <DefinitionSlide
+          inverted
+          term="Proof Of Replication"
+          definition="Proof Of Storage Of A Unique Copy">
+          <Notes>
+            <p>
+              To prevent these attacks, Filecoin introduces Proof Of
+              Replication, a type of proof that demonstrates possession of a
+              unique copy of data on a miner's phsyical media. In PoRep, a miner
+              in possession of some data encodes it using various parameters to
+              produce a unique replica, along with artifacts a verifier can use
+              to produce Proof Of Space challenges for that unique replica. In
+              filecoin we call this encoding process sealing. Once the data is
+              sealed, the verifier produces challenges without full knowledge of
+              the unique contents of the replica, but only the miner in
+              possession of the replica can succcessfully respond.
+            </p>
+
+            <p>
+              The construction of Proof Of Replication used in the initial
+              release of Filecoin mainnet is called Stacked Depth Robust Graph,
+              or Stacked DRG, and please do not ask me to explain it cause I
+              can't.
+            </p>
+          </Notes>
+        </DefinitionSlide>
+        <DefinitionSlide
+          inverted
+          term="Proof Of Space Time"
+          definition="Proof of possession of data over time">
+          <Notes>
+            <p>
+              Finally, while Proof Of Storage or PoST enables us to verify
+              possession of data at a given point in time, we want to gaurantee
+              possession of data over a period of time. While we can do this
+              through frequent polling, in a blockchain system constantly
+              posting proofs would generate an enormous amount of on chain data.
+              Instead, in PoST we generate a series of challenges over time, but
+              recursively compose the responses into a single proof.
+            </p>
+            <p>
+              Filecoin has two forms of PoST, WinningPoST, in which miners
+              produce a PoST for random portions of their data as part of the
+              mechanism for winning blocks, and WindowPoST, in which miners
+              produce PoSTs that prove possession of all their data at regular
+              intervals in every 24 hour period.
+            </p>
+          </Notes>
+        </DefinitionSlide>
+        <SimpleSlide statement="3. Expected Consensus">
+          <Notes>
+            So how do we use all this to produce a blockchain? Filecoin is based
+            on an algorithm called Expected Consensus, whose name is derived
+            from the fact that at each chain epoch, more than one miner may be
+            eligible to mine a block up to a set maximum, and the chain is
+            composed of tipsets which are collections of winning blocks point to
+            the previous tipset
+          </Notes>
+        </SimpleSlide>
+        <ConceptSlide inverted concept="Step 1" description="Leader Election">
+          <Notes>
+            Like many proof of stake systems, in each epoch, we select miners
+            elibible to mine blocks based of a random function weighted by the
+            amount of storage power the miner is contributing to the network.
+            Our selection function selects multiple participants who are
+            eligible, but it is impossible to predict who will win until the
+            winners declare themselves by submitting a proof of their winning.
+          </Notes>
+        </ConceptSlide>
+        <DefinitionSlide
+          inverted
+          fit={false}
+          term="DRAND"
+          definition="Distributed Randomness">
+          <Notes>
+            Like many proof of stake systems, we need an unbiasable randomness
+            generator, which is itself a sizable challenge. Filecoin uses a
+            system called DeeRand, which stands for Distributed Randomness, in
+            which a serious of trusted players coordinate to produce a public
+            randomness beacon, that no single insider can bias. DRAND is a whole
+            production grade project in and of itself -- it's worth checking out
+            for its unique contributions to the field of unbiasable, verifiable,
+            public randomness.
+          </Notes>
+        </DefinitionSlide>
+        <ConceptSlide
+          inverted
+          fit={false}
+          concept="Step 2"
+          description="Election Proof">
+          <Notes>
+            Winning miners use their unique identity in combination with the
+            randomness beacon as a seed to determine if they've won the election
+            and generate a proof that they did. This is the first part component
+            in submitting a winning block
+          </Notes>
+        </ConceptSlide>
+        <ConceptSlide
+          inverted
+          fit={false}
+          concept="Step 3"
+          description="Winning PoST">
+          <Notes>
+            Finally, the miner uses the randomness beacon to select a random
+            sector for which they will generate a proof of spacetime. If they
+            aren't able to generate a PoST in a set amount of time -- i.e.
+            before the end of the given epoch -- they forfeit their chance to
+            win a block. All winning blocks are combined to produce a tipset.
+            The winning chain is determined by a weighting function that biases
+            for tipsets with more blocks. (it's called expected consensus
+            because consensus over the winning tipset is probabilistically final
+            over time)
+          </Notes>
+        </ConceptSlide>
+        <ImageSlide inverted title="Intermission" image="intermission.gif">
+          <Notes>
+            I'll be honest. This stuff makes my brain hurt. I can only keep it
+            all in my head at once. So, I'm including a brief break for mental
+            relaxation.
+          </Notes>
+        </ImageSlide>
+        <SimpleSlide statement="Let's look at some dogs"></SimpleSlide>
+        <ImageSlide inverted image="dogs.jpg"></ImageSlide>
+        <ImageSlide inverted image="dogs2.jpg"></ImageSlide>
+        <ImageSlide inverted image="dogs3.jpg"></ImageSlide>
+        <ImageSlide inverted image="dogs4.jpg"></ImageSlide>
+        <ImageSlide inverted image="dogs5.jpg"></ImageSlide>
+        <ImageSlide inverted image="poohbear.jpg"></ImageSlide>
+        <SimpleSlide statement="4. CryptoEconomics">
+          <Notes>
+            Now that we've understood some basics of Filecoin's consensus
+            protocol, let's look at some cryptoeconomic incentives Filecoin uses
+            to insure the most ideal network for storage over time
+          </Notes>
+        </SimpleSlide>
+        <ImageSlide inverted title="Minting Model" image="minting.gif">
+          <Notes>
+            First let's look at how filecoin mints new tokens in block rewards
+          </Notes>
+        </ImageSlide>
+        <SimpleSlide inverted statement="Simple Minting">
+          <Notes>
+            Traditional crypto minting systems employ an exponential decay
+            function - rewards are high at the beginning, but fall off over
+            time. We employ this in filecoin but it's not sufficient. A simple
+            minting system might insure a rush to provide storage early on
+            followed by miners removing storage from the network when it becomes
+            less profitable.
+          </Notes>
+        </SimpleSlide>
+        <SimpleSlide inverted statement="Baseline Minting">
+          <Notes>
+            Filecoin introduces baseline minting as a compliment to simple
+            minting. Baseline minting scales up block rewards in comparison to a
+            network baseline of target storage power that increases over time.
+            We start at a baseline of 1 Exobyte and increases 200% every year.
+            Baseline minting makes up 70% of the token reward. Improvements to
+            the protocol, such as new Proof Of Replication algorithms, make it
+            easier to reach baseline mining, so the community is additionally
+            incentivized to improve the ecosytem.
+          </Notes>
+        </SimpleSlide>
+        <ImageSlide
+          inverted
+          title="Filecoin Economy Stages"
+          image="final-stages-of-economy.jpg">
+          <Notes>
+            This graph shows the changing incentive structure over time. In the
+            early stages of the network, high block rewards for simple minting
+            encourage miners to jump in with rapid contributions of storage.
+            Later, miners are incentivized to keep rewards high by improving the
+            protocol and keeping their storage in the network to reach baseline
+            minting. Finally, in the later stages of the network, while storage
+            power continues to produce rewards, the primary incentive structure
+            becomes making client deals to store and retrieve data.
+          </Notes>
+        </ImageSlide>
+        <SimpleSlide inverted statement="Miner Collateral">
+          <Notes>
+            Up till now, I've painted a somewhat incomplete picture of
+            Filecoin's Proof Of Stake system, saying it's based entirely on
+            storage contributed to the network. This is largely true, but, for
+            the security of the network, staking storage hardware alone is not
+            enough, because it's standardized hardware that can be easily
+            removed and repurposed. To protect against this, miners also stake
+            collateral in the form of tokens, as in traditional proof of stake
+            systems, in proportion to the storage power they contribute. This
+            combination of storage power and token stake makes the network
+            resilient to attack, and incentivizes long term participation.
+            Moreover, while a portion of the this pledge collateral is fixed and
+            must be paid upfront on every sector, much of the collateral is
+            provided by block rewards, which vest over time. This increases
+            miner liquidity and lowers the upfront initial pledge fee, while at
+            the same time incentivizing holding storage for the duration of the
+            vesting period.
+          </Notes>
+        </SimpleSlide>
+        <SimpleSlide inverted statement="Deal Collateral">
+          <Notes>
+            I want to finally mention one final and unrelated form of collateral
+            -- a miner puts up collateral when making a storage deal. This
+            provides the client a gaurantee against the miner losing their data
+            or abandoning a sector before the deal is finished
+          </Notes>
+        </SimpleSlide>
+        <SimpleSlide inverted statement="Verified Client">
+          <Notes>
+            I want to mention one last cryptoeconomic incentive. While miners
+            gain power by committing capacity to the network, we want to
+            incentize the storage of real data that is useful to clients, rather
+            than just have miners generate empty sectors themselves. Through a
+            simple and open process, a client seeking to store data can become
+            verified, and be allocated a data cap for verified data. All data
+            they store then, up to the data cap then contributes to storage
+            power at a 10x rate. The verification system will be done through
+            distributed network of entites that confirms useful storage demand,
+            mildly analogous to the SSL certificate system. One caveat: while
+            the underlying logic for verified clients is implemented, the
+            network of verification entities is still being built. We expect
+            storing verified data will become an increasingly important
+            incentive over time.
+          </Notes>
+        </SimpleSlide>
+        <SimpleSlide statement="5. Virtual Machine">
+          <Notes>
+            All of this logic around rewards, deals, sealing, proofs, verified
+            clients is tracked and verified by the Filecoin Virtual Machine,
+            which processes incoming messages and uses them to apply transitions
+            to the overall state of the system.
+          </Notes>
+        </SimpleSlide>
+        <ImageSlide
+          inverted
+          title="Actors"
+          image="acting.gif"
+          text="Smart Contracts In Filecoin">
+          <Notes>
+            Filecoin's virtual machine is made up of actors, each with set of
+            predefined methods that perform transitions to the actor state.
+            Methods are triggered by messages sent to the Filecoin chain or
+            other actors, and predefined actors have different functions --
+            tracking deals, tracking miner power, dispensing block rewards,
+            verifying storage, and other mechanisms. Each block contains on the
+            chain contains a hash of the previous state and a set of messages to
+            apply to that state to produce the next chain state. In addition to
+            block rewards, miners who mine a block are paid in transaction fees,
+            which we also call gas, to process the messages in the block
+          </Notes>
+        </ImageSlide>
+        <SimpleSlide statement="6. Filecoin vs Ethereum (Filecoin ❤️ Ethereum)">
+          <Notes>
+            <p>
+              At this point, I've covered a lot of the underlying mechanics of
+              Filecoin. And, you may have noticed many components that operate
+              in ways quite similar to ethereum.
+            </p>
+            <p>Fair warning this section is almost 100% memes</p>
+          </Notes>
+        </SimpleSlide>
+        <ImageSlide inverted image="proofofstake.jpg">
+          <Notes>
+            <p>
+              For example, like Ethereum 2, one important innovation of Filecoin
+              is implementing a proof-of-stake system as opposed to a proof of
+              work. And as a proof-of-stake system, many of Filecoin's consensus
+              components are similar to Eth2's Beacon chain.
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide inverted image="libp2p.jpg" text="Libp2p">
+          <Notes>
+            <p>
+              The similarities don't stop there. Ethereum 2 and Filecoin are
+              both built on the same underlying peer-to-peer networking stack,
+              originally developed by protocol labs for IPFS, called libp2p
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          image="stonks.jpg"
+          title="Contracts"
+          text="So Smart.">
+          <Notes>
+            Obviously both Ethereum and Filecoin implement smart contracts as a
+            way of building distributed processing in a virtual state machine
+          </Notes>
+        </ImageSlide>
+        <ImageSlide inverted image="competition.jpg">
+          <Notes>
+            So is Filecoin just the new hotness here to steal Ethereum's
+            thunder? Are we competitors?
+          </Notes>
+        </ImageSlide>
+        <ImageSlide inverted image="nope1.jpg">
+          <Notes>
+            This is really easy to answer really. First, shared solutions
+            reduces work for all - the fact that Ethereum and Filecoin share
+            technologies and design choices is a good thing, not a sign of
+            competition
+          </Notes>
+        </ImageSlide>
+        <ImageSlide inverted image="nope2.jpg">
+          <Notes>
+            But more importantly, Filecoin and Ethereum are designed to do
+            different, complementary things. Filecoin is a storage network.
+            While we may have a form of smart contracts, they're set and fixed
+            by the system, and used simply to manage the operation of the
+            network. Our goal is building a network to hold the worlds data. We
+            don't intend to become a distributed computation platform.
+          </Notes>
+        </ImageSlide>
+        <ImageSlide inverted image="distributed.jpg">
+          <Notes>
+            Really this is the relationship of Filecoin and Ethereum -- we are
+            partners in building the core platform for the distributed internet.
+            When you need to store data for your Ethereum applications, rather
+            than rely on centralized, privatized platforms you can now put your
+            data in the DWeb with Filecoin
+          </Notes>
+        </ImageSlide>
+        <SimpleSlide statement="7. Making Deals">
+          <Notes>
+            I'm going to close with brief overview of the actual deal making
+            negotiation process, a process that's near and dear to my heart, as
+            it's the component of the system I wrote most of. Let's talk about
+            how deals get made in Filecoin.
+          </Notes>
+        </SimpleSlide>
+        <ImageSlide
+          inverted
+          fit={true}
+          title="Storage Market"
+          image="marketplace3.jpg">
+          <Notes>
+            <p>
+              The best analogy for the deal process in Filecoin is that it's
+              truly is a like an market or bazaar
+            </p>
+            <p>
+              Let's think about how deals get made in these kinds of situations
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide inverted fit={true} title="Discovery" image="vendors.jpg">
+          <Notes>
+            <p>First, you browse the vendors and see what's available</p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide inverted fit={true} title="Negotiation" image="haggle.jpg">
+          <Notes>
+            <p>
+              Next, you find someone who you think is a good vendor and you
+              haggle over the price
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide inverted fit={true} title="Transfer" image="overloaded.jpg">
+          <Notes>
+            <p>
+              Now if you're paying someone to store your stuff, you gotta move
+              your stuff over to them
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          fit={true}
+          title="Sealing The Deal"
+          image="exchange.jpg">
+          <Notes>
+            <p>
+              At this point, it's time for everyone to commit to your deal - we
+              make some kind of contract and it's in writing. Through this
+              exchange everyone is now onboard
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide inverted fit={true} title="Verifying" image="storage.png">
+          <Notes>
+            <p>
+              Lastly, in Filecoin, you're paying for a service -- someone's
+              storing your data, and you paying them at regular intervals, and
+              you want to make sure they've got the right stuff
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ListSlide
+          ordered={false}
+          appear={true}
+          title="Steps In A Deal"
+          list={[
+            'Discovery',
+            'Negotiation',
+            'Transfer',
+            'Sealing The Deal',
+            'Verifying'
+          ]}>
+          <Notes>
+            <p>So here are our steps</p>
+          </Notes>
+        </ListSlide>
+        <ListSlide
+          transition={['fade']}
+          ordered={false}
+          appear={false}
+          title="In Filecoin Terms..."
+          list={[
+            'Discovery',
+            'Negotiation',
+            'Transfer',
+            'Publishing',
+            'Proving'
+          ]}>
+          <Notes>
+            <p>
+              And these are the basic steps of the Filecoin deal -- though we
+              refer to the point we seal our agreement as publishing, and we
+              refer to the final stage, where storage is verified and funds are
+              incrementally transferred as Proving-- because it's done through
+              the proof of space time proofs we've talked so much about.
+            </p>
+          </Notes>
+        </ListSlide>
+        <SimpleSlide statement="Goals At Each Step" />
+        <ConceptSlide
+          fit={false}
+          concept="Discovery"
+          description="Provider offer parameters are verifiable">
+          <Notes>
+            As we discover providers, and ask them what parameters they are
+            offering for deals, we're going to make sure their offers are
+            cryptographically signed so we know a malicious party isn't falsely
+            advertising on their behalf
+          </Notes>
+        </ConceptSlide>
+        <ConceptSlide
+          fit={false}
+          concept="Negotiation"
+          description="Provider has what it needs except data">
+          <Notes>
+            We want to make sure that when a client proposes a deal, and the
+            provider agrees to a data transfer, they can't just backout after an
+            expensive transfer operation. So our proposals contain everything
+            The provider needs to publish the deal except the data itself,
+            include a cryptographic signature from the client
+          </Notes>
+        </ConceptSlide>
+        <ConceptSlide
+          fit={false}
+          concept="Transfer"
+          description="Transfer is verifiable, incrementally">
+          <Notes>
+            A provider shouldn't do an expensive data transfer only to find out
+            they got the wrong data. So our transfer needs to be verifiable, and
+            ideally, it should be verifiable incrementally. So all of our
+            transport protocols for deals verify what is transferred
+          </Notes>
+        </ConceptSlide>
+        <ConceptSlide
+          fit={false}
+          concept="Publishing"
+          description="No deal is published that cannot be fulfilled or refunded">
+          <Notes>
+            When we publish, we need several gaurantees. A provider needs to
+            know the client has the money to pay for the deal. A provider needs
+            to know they have the exact data they need to store. A client needs
+            to know if the deal fails down the line, the provider can pay the
+            client back for unstored time We use an escrow system -- prior to
+            publishing each party puts funds in escrow, and when the deal is
+            published, those funds become locked, and are released as the deal
+            is proven over time.
+          </Notes>
+        </ConceptSlide>
+        <ConceptSlide
+          fit={false}
+          concept="Proving"
+          description="Only pay when storage is verified">
+          <Notes>
+            Once the deal is published, a client should only pay money for
+            storing if the provider can prove they are still holding the data.
+          </Notes>
+        </ConceptSlide>
+        <SimpleSlide inverted statement="But wait...">
+          <Notes>
+            Now, we've talk a lot about the deal process, but we left something
+            out...
+          </Notes>
+        </SimpleSlide>
+        <ImageSlide
+          inverted
+          title="How does data get into filecoin?"
+          image="curb.gif">
+          <Notes>
+            We haven't actually talked about how data gets into filecoin
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          image="kitten.jpg"
+          title="Start with system file"
+          text="catpix.gif">
+          <Notes>
+            <p>
+              So let's say we start with a file on our system -- in the grand
+              tradition of the internet, it's a cat picture. Now, we want to put
+              it in filecoin
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="merkledag_hashes.png"
+          title="IPLD DAG"
+          text="Identified by Payload CID">
+          <Notes>
+            <p>
+              In the first stage of this transformation, the system file is
+              chunked up with UnixFS to create an IPLD DAG (Directed Acyclic
+              Graph). You may have heard about IPLD more in the earlier talk.
+              This IPLD DAG is identified payload CID, which represents the root
+              of the DAG. At this point the format of the data is the same as it
+              is in IPFS. This is also the format we'll transfer the data in.
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="piece.png"
+          title="Piece"
+          text="Identified by Piece CID">
+          <Notes>
+            <p>
+              The IPLD DAG is then serialized to a CAR file and bit padded to
+              make a Filecoin Piece. (Bit padding adds extra bits to make the
+              piece conform to a standard size.) This piece has a unique piece
+              CID, also known as a CommP (Piece Commitment). The piece is what
+              the storage provider commits to storing.
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ListSlide
+          ordered={false}
+          title="Other important transformations"
+          list={[
+            'Unsealed Sector: Identified By CommD',
+            'Sealed Sector: Identified By CommR'
+          ]}>
+          <Notes>
+            <p>
+              Once a deal is agreed upon, the miner packs one or more deals
+              together into a sector, which is identified by the value CommD
+            </p>
+            <p>
+              As we discussed previously, the miner applies a sealing process to
+              generate a unique copy, which we call a sealed sector, and this is
+              identified by the value CommR
+            </p>
+          </Notes>
+        </ListSlide>
+        <ImageSlide
+          inverted
+          title="Some terminology"
+          image="excuse-me.png"></ImageSlide>
+        <DefinitionSlide
+          inverted
+          fit={false}
+          term="Storage Client"
+          definition="Party that wants to make a deal to store data">
+          <Notes>
+            We call the party that's storing data the client or storage client.
+          </Notes>
+        </DefinitionSlide>
+        <DefinitionSlide
+          inverted
+          fit={false}
+          term="Storage Provider"
+          definition="Party that will store the data in exchange for payment">
+          <Notes>
+            We call the party, in this case a miner, who will store the data in
+            exchange for payment a provider or storage provider.
+          </Notes>
+        </DefinitionSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="scrooge.gif"
+          title="Storage Market Actor"
+          text="The on-chain component of deals.">
+          <Notes>
+            The StorageMarketActor is not, despite the name, a person. It's
+            software in the Filecoin VM and it's on chain The market actor,
+            cause it's hardcoded software in the Filecoin VM, is our trusted
+            broker -- it manages escrow and a ledger for all deals made.
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="bernie2.jpg"
+          title="Storage Ask"
+          text="Price and parameters a miner is currently offering">
+          <Notes>
+            The StorageAsk what we call the current deal parameters a miner is
+            offering for a deal.
+            <p>
+              You can think of it as analogous to an Ask in a financial market
+            </p>
+          </Notes>
+        </ImageSlide>
+        <ImageSlide
+          inverted
+          fit={false}
+          image="proprosal.gif"
+          title="Storage Deal Proposal"
+          text="Signed proposal for a storage deal">
+          <Notes>
+            <p>
+              {' '}
+              StorageDealProposal is a proposal for a storage deal, signed only
+              by the Storage client
+            </p>
+            <p>
+              it's the clients commitment to moving forward with the deal once
+              the provider has data
+            </p>
+          </Notes>
+        </ImageSlide>
+        <DefinitionSlide
+          inverted
+          fit={false}
+          term="Storage Deal"
+          definition="Deal that acccepted and on chain">
+          <Notes>
+            When the provider submits the signed proposal from the client with
+            their own signature, it goes on chain and becomes a sotrage deal
+          </Notes>
+        </DefinitionSlide>
+        <SimpleSlide statement="Deal Negotiation Step By Step" />
+        <SimpleSlide statement="8. Live Demo! Making a deal!" />
+      </Deck>
+    )
+  }
+}
